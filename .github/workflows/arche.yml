@@ -1,0 +1,34 @@
+name: ARCHE Metadata Ingest
+
+on:
+  push
+
+jobs:
+  build_pages_and_ingest:
+    name: ARCHE Ingest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v2
+    - name: ingestion dependencies
+      run: |
+        composer require "acdh-oeaw/arche-ingest:^1"
+    - name: ingest md
+      run: |
+        vendor/bin/arche-import-metadata arche.rdf https://arche-dev.acdh-dev.oeaw.ac.at/api ${{secrets.ARCHE_LOGIN}} ${{secrets.ARCHE_PASSWORD}}
+    - name: ingest resources
+      run: |
+        vendor/bin/arche-import-metadata html/arche.rdf https://arche-dev.acdh-dev.oeaw.ac.at/api ${{secrets.ARCHE_LOGIN}} ${{secrets.ARCHE_PASSWORD}} --retriesOnConflict 25
+    - name: install repo-file-checker
+      run: |
+        composer require "acdh-oeaw/repo-file-checker:^2"
+        mkdir -p filechecker/tmp filechecker/reports
+    - name: run repo-file-checker
+      run: |
+        php -f vendor/acdh-oeaw/repo-file-checker/index.php -- --tmpDir filechecker/tmp --reportDir filechecker/reports icons 0
+    - name: ingestion dependencies
+      run: |
+        composer require "acdh-oeaw/arche-ingest:^1"
+    - name: ingest binaries
+      run: |
+        vendor/bin/arche-import-binary icons https://id.acdh.oeaw.ac.at/arche-icons https://arche-dev.acdh-dev.oeaw.ac.at/api ${{secrets.ARCHE_LOGIN}} ${{secrets.ARCHE_PASSWORD}} --skip not_exist
