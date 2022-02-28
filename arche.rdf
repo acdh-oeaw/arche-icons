@@ -26,7 +26,7 @@
         <acdh:hasMetadataCreator rdf:resource="https://id.acdh.oeaw.ac.at/mtrognitz"/>
         <acdh:hasDepositor rdf:resource="https://id.acdh.oeaw.ac.at/pandorfer"/>
         <acdh:hasCurator rdf:resource="https://id.acdh.oeaw.ac.at/pandorfer"/>
-    </acdh:TopCollection>
+    </acdh:Collection>
     <acdh:Resource rdf:about="https://id.acdh.oeaw.ac.at/arche-utility-files/arche-icons/arche_collection.svg">
         <acdh:isPartOf rdf:resource="https://id.acdh.oeaw.ac.at/arche-utility-files/arche-icons"/>
         <acdh:hasTitle xml:lang="en">arche_collection.svg</acdh:hasTitle>
